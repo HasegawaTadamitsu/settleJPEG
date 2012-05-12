@@ -1,0 +1,12 @@
+.rbenv-version
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/
+
+*.JPG
+*.jpg
+*.JPEG
+*.jpeg
+output
+test_data

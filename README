@@ -1,0 +1,64 @@
+・目的
+　写真の整理を目的としています。
+
+　たくさんのJPEGを日付単位にディレクトリを作成し
+　そこにコピーします。
+
+
+・実行
+　ruby  settleJPG.rb  -s src_dir -d dest_dir
+　src_dir にある*.JPG/*.jpg/*.JPEG/*.jpegを
+　JPEGが持っている撮影日付を元に
+　destのディレクトリにYYYYMMDDのディレクトリを作り
+　そこにコピーします。
+　コピー元は削除しません。
+　日付取得できない場合、unknownディレクトリを作成しそこにコピーされます。
+
+　例　
+rin% du -a test_data 
+4848    test_data/DSCF7992.JPG
+0       test_data/a.jpg
+4756    test_data/DSCF7630.JPG
+4356    test_data/DSCF5904.JPG
+4536    test_data/DSCF5909.JPG
+5052    test_data/test/DSCF7430.JPG
+5056    test_data/test
+8       test_data/Phalaenopsis_JPEG.jpg
+23564   test_data
+rin% ruby settleJPG.rb -s ./test_data -d output
+rin% du -a output 
+4356    output/20120219/DSCF5904.JPG
+4536    output/20120219/DSCF5909.JPG
+8896    output/20120219
+4756    output/20120226/DSCF7630.JPG
+5052    output/20120226/DSCF7430.JPG
+9812    output/20120226
+0       output/unknown/a.jpg
+8       output/unknown/Phalaenopsis_JPEG.jpg
+12      output/unknown
+4848    output/20120303/DSCF7992.JPG
+4852    output/20120303
+23576   output
+rin%
+
+  src_dir　は再帰的にたどります。そのため、ファイル名がコリジョンしてしまう
+　可能性があります。
+　その場合、標準出力にメッセージを表示し、コピーしません。
+　なので、もう一回実行すると下のようになります。
+
+rin% ruby settleJPG.rb -s ./test_data -d output
+already exist file. ./test_data/DSCF7992.JPG output/20120303/DSCF7992.JPG
+already exist file. ./test_data/a.jpg output/unknown/a.jpg
+already exist file. ./test_data/DSCF7630.JPG output/20120226/DSCF7630.JPG
+already exist file. ./test_data/DSCF5904.JPG output/20120219/DSCF5904.JPG
+already exist file. ./test_data/DSCF5909.JPG output/20120219/DSCF5909.JPG
+already exist file. ./test_data/test/DSCF7430.JPG output/20120226/DSCF7430.JPG
+already exist file. ./test_data/Phalaenopsis_JPEG.jpg output/unknown/Phalaenopsis_JPEG.jpg
+rin% 
+
+・オプション
+　オプションは下のとおり
+　-s ソースディレクトリ（必須）
+　-d コピー先ディレクトリ(必須）
+
+
